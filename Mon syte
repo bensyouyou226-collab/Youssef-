@@ -1,0 +1,100 @@
+# Youssef-<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>نظام تسجيل الغياب</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    form {
+      margin: 20px auto;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+    }
+    input, button {
+      width: 90%;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    th, td {
+      border: 1px solid white;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📚 نظام تسجيل الغياب</h1>
+
+<form id="form">
+  <input type="text" id="name" placeholder="اسم التلميذ" required>
+  <input type="date" id="date" required>
+  <button type="submit">تسجيل الغياب</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>الاسم</th>
+      <th>التاريخ</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+  const form = document.getElementById("form");
+  const tableBody = document.getElementById("tableBody");
+
+  let data = JSON.parse(localStorage.getItem("absences")) || [];
+
+  function render() {
+    tableBody.innerHTML = "";
+    data.forEach(item => {
+      tableBody.innerHTML += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.date}</td>
+        </tr>
+      `;
+    });
+  }
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const date = document.getElementById("date").value;
+
+    data.push({ name, date });
+    localStorage.setItem("absences", JSON.stringify(data));
+
+    form.reset();
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
